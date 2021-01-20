@@ -1640,7 +1640,9 @@ GROUP BY zf.id");
     }
 
     public function pestscancommafix() {
-        $query = $this->db->query("SELECT * FROM zform_336_Select_Pest_Details WHERE  Pest_Disease_Name_loop LIKE '%,%'");
+        $query = $this->db->
+		query("SELECT * FROM zform_336_Select_Pest_Details
+		WHERE  Pest_Disease_Name_loop LIKE '%,%'");
         $counter_added = 0;
         $counter_editable = 0;
         $form_rec = $query->result_array();
