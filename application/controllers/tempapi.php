@@ -1670,7 +1670,8 @@ GROUP BY zf.id");
 	
 	/*
      * sendToRemoteServerCustomDataA
-     * A custom function to get custom query data for evaccs-kpk from dataplug-pitb-server.
+     * A custom function to get custom query 
+	 data for evaccs-kpk from dataplug-pitb-server.
 	 * Author : Rana Tariq Yaqub
 	 * Datetime : 2017-10-12 12:51:51
      * */
@@ -1679,7 +1680,8 @@ GROUP BY zf.id");
         ini_set('memory_limit', '-1');
         if (isset($_REQUEST ['app_id']) && isset($_REQUEST ['security_token'])) {
             $app_id = $_REQUEST ['app_id'];
-            if(isset($_REQUEST ['from_date_stamp']) && !empty($_REQUEST ['from_date_stamp'])){
+            if(isset($_REQUEST ['from_date_stamp']) &&
+			!empty($_REQUEST ['from_date_stamp'])){
                 $pos = strpos($_REQUEST ['from_date_stamp'], ':');
                 $from_date_stamp = $_REQUEST ['from_date_stamp'];
                 if ($pos === false) {
@@ -1694,10 +1696,14 @@ GROUP BY zf.id");
                 }
             }
             
-            // $from_date_stamp = isset($_REQUEST ['from_date_stamp']) ? $_REQUEST ['from_date_stamp'] : '';
-            // $to_date_stamp = isset($_REQUEST ['to_date_stamp']) ? $_REQUEST ['to_date_stamp'] : '';
-            $imei_no = isset($_REQUEST ['imei_no']) ? $_REQUEST ['imei_no'] : null;
-            $security_token = $_REQUEST ['security_token']; // 954223eaaec107c5d7965978c9665e64
+            // $from_date_stamp = isset($_REQUEST ['from_date_stamp'])
+//			? $_REQUEST ['from_date_stamp'] : '';
+            // $to_date_stamp = isset($_REQUEST ['to_date_stamp'])
+			//? $_REQUEST ['to_date_stamp'] : '';
+            $imei_no = isset($_REQUEST ['imei_no']) 
+			? $_REQUEST ['imei_no'] : null;
+            $security_token = $_REQUEST ['security_token'];
+			// 954223eaaec107c5d7965978c9665e64
 
             $selected_app = $this->app_model->get_app($app_id);
             $app_name = $selected_app ['name'];
@@ -1706,7 +1712,10 @@ GROUP BY zf.id");
                 $final_result = array();
                 $results_count = 0;
                 if( isset($_REQUEST ['form_id']) && !empty($_REQUEST ['form_id']) ){
-                    $results = $this->form_results_model->syncDataFromRemoteServerCustomData($_REQUEST ['form_id'], $from_date_stamp, $to_date_stamp,$imei_no);
+                    $results = $this->
+					form_results_model->
+					syncDataFromRemoteServerCustomData($_REQUEST ['form_id']
+					, $from_date_stamp, $to_date_stamp,$imei_no);
                     $results_count += count($results);
                     foreach ($results as $rec) {
 						
