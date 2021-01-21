@@ -1518,7 +1518,9 @@ class Tempapi extends CI_Controller {
                     $form_results = $query_form->result_array();
                     if($form_results){
                         foreach ($form_results as $f_result) {
-                            $query_form_img = $this->db->query("SELECT * FROM zform_images where form_id=".$form_id." AND zform_result_id=".$f_result['id']);
+                            $query_form_img = $this->db->
+							query("SELECT * FROM zform_images where form_id=".$form_id." 
+							AND zform_result_id=".$f_result['id']);
                             $form_result_img = $query_form_img->result_array();
                             if($form_result_img){
                                 foreach ($form_result_img as $i_result) {
@@ -1562,7 +1564,10 @@ class Tempapi extends CI_Controller {
 //        //print "<pre>";
 ////        print_r($form_result_list);
 ////        exit;
-//        $skip_array = array('id','form_id','activity_status','imei_no','location','uc_name','town_name','district_name','is_deleted','version_name','location_source','time_source','post_status','activity_datetime','created_datetime');
+//        $skip_array = array('id','form_id','activity_status','
+//			imei_no','location','uc_name','town_name','district_name','is_deleted',
+//			'version_name','location_source','time_source','post_status','activity_datetime'
+//			,'created_datetime');
 //        foreach ($form_result_list as $fkey => $fv) {
 //            //print_r($fv);
 //            $up_array = array();
@@ -1577,7 +1582,8 @@ class Tempapi extends CI_Controller {
 //                    $up_array[$key] = $vdcode;
 //                }
 //                elseif(strpos($v, $form_info['security_key']) !== FALSE){
-//                    $vdcode = urldecode(base64_decode(str_replace($form_info['security_key'], '', $v)));
+//                    $vdcode = urldecode(base64_decode(str_replace
+//                    ($form_info['security_key'], '', $v)));
 //                    $up_array[$key] = $vdcode;
 //                }
 //                else{
@@ -1599,7 +1605,9 @@ class Tempapi extends CI_Controller {
         //$api = $this->input->get('api');
         //$secret = $this->input->get('secret');
         $points = array();
-        $query = $this->db->query("SELECT zf. * , GROUP_CONCAT( tl.point_location SEPARATOR '#' ) points
+        $query = $this->db->
+		query("SELECT zf. * , GROUP_CONCAT( tl.point_location SEPARATOR '#' )
+		points
 FROM `zform_356` zf
 LEFT JOIN zform_356_Take_Location tl ON zf.id = tl.zform_result_id
 GROUP BY zf.id");
@@ -1633,7 +1641,10 @@ GROUP BY zf.id");
         exit();
     }
     public function deletebeforethreemonth(){
-        $quer = $this->db->query("DELETE FROM `mobile_activity_log` WHERE DATE(`created_datetime`) < DATE(NOW() - INTERVAL 90 DAY) and error='submitted'");
+        $quer = $this->db->
+		query("DELETE FROM `mobile_activity_log` 
+		WHERE DATE(`created_datetime`) < DATE(NOW() - INTERVAL 90 DAY) 
+		and error='submitted'");
     print_r($quer);
         die('Delete 3 month old data');
         
