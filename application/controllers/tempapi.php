@@ -1437,7 +1437,9 @@ class Tempapi extends CI_Controller {
                     $form_results = $query_form->result_array();
                     if($form_results){
                         foreach ($form_results as $f_result) {
-                            $query_form_img = $this->db->query("SELECT * FROM zform_images where form_id=".$form_id." AND zform_result_id=".$f_result['id']);
+                            $query_form_img = $this->db->
+							query("SELECT * FROM zform_images where form_id="
+							.$form_id." AND zform_result_id=".$f_result['id']);
                             $form_result_img = $query_form_img->result_array();
                             if($form_result_img){
                                 foreach ($form_result_img as $i_result) {
