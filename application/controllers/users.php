@@ -17,7 +17,10 @@ class Users extends CI_Controller {
 //        }
         $sess_ar = $this->session->userdata('logged_in');
         if ($sess_ar['login_verification_code']!= '') {
-           $this->session->set_flashdata('validate', array('message' => 'Limited time access , Your account not verified yet, please check your email and verify otherwise account will delete after 30 days.', 'type' => 'warning'));
+           $this->session->set_flashdata('validate'
+		   , array('message' => 'Limited time access 
+		   , Your account not verified yet, please check your email and verify 
+		   otherwise account will delete after 30 days.', 'type' => 'warning'));
         }
     }
 
@@ -25,7 +28,9 @@ class Users extends CI_Controller {
 
         
         if (!$this->acl->hasPermission('users', 'view')) {
-            $this->session->set_flashdata('validate', array('message' => "You don't have enough permissions to do this task.", 'type' => 'warning'));
+            $this->session->set_flashdata('validate'
+			, array('message' => "You don't have enough permissions to do this task."
+			, 'type' => 'warning'));
             redirect(base_url() . 'apps');
         }
         if (!$this->session->userdata('user_id')) {
@@ -49,14 +54,23 @@ class Users extends CI_Controller {
         if ($this->input->post()) {
 
             $required_if = $this->input->post('department_id') == 'new' ? '|required' : '';
-            $this->form_validation->set_rules('department_name', 'Department Name', 'trim' . $required_if . '|min_length[1]|xss_clean|callback_department_name_exists');
-            $this->form_validation->set_rules('department_id', 'Department', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('first_name', 'First Name', 'trim|required|min_length[1]|xss_clean');
-            $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required|min_length[1]|xss_clean');
-            //$this->form_validation->set_rules('username', 'User Name', 'trim|required|callback_username_not_available');
-            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|callback_email_not_available');
-            $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[4]|max_length[32]');
-            $this->form_validation->set_rules('conf_password', 'Password Confirmation', 'trim|required|matches[password]');
+            $this->form_validation->set_rules('department_name', 
+			'Department Name', 'trim' . $required_if 
+			. '|min_length[1]|xss_clean|callback_department_name_exists');
+            $this->form_validation->set_rules('department_id',
+			'Department', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('first_name', 
+			'First Name', 'trim|required|min_length[1]|xss_clean');
+            $this->form_validation->set_rules('last_name', 
+			'Last Name', 'trim|required|min_length[1]|xss_clean');
+            //$this->form_validation->set_rules('username', 
+			//'User Name', 'trim|required|callback_username_not_available');
+            $this->form_validation->set_rules('email', 'Email'
+			, 'trim|required|valid_email|callback_email_not_available');
+            $this->form_validation->set_rules('password'
+			, 'Password', 'trim|required|min_length[4]|max_length[32]');
+            $this->form_validation->set_rules('conf_password'
+			, 'Password Confirmation', 'trim|required|matches[password]');
 
             if ($this->form_validation->run() == FALSE) {
 
@@ -93,7 +107,9 @@ class Users extends CI_Controller {
                 if($department_id == 40){
                     $data['status'] = '1';
                 }
-                $query = $this->db->get_where('users', array('email' => $this->input->post('email'), 'status' => '0', 'is_deleted' => '0'));
+                $query = $this->db->get_where('users'
+				, array('email' => $this->input->post('email')
+				, 'status' => '0', 'is_deleted' => '0'));
                 $exist = $query->row_array();
 
                 if ($exist) {
@@ -109,10 +125,14 @@ class Users extends CI_Controller {
                 // }
                 addAppFromSession($department_id, $user_id);
 
-                $this->session->set_flashdata('validate', array('message' => 'Verify your e-mail address to login', 'type' => 'success'));
+                $this->session->set_flashdata('validate'
+				, array('message' => 'Verify your e-mail address to login'
+				, 'type' => 'success'));
 
                 //send email to user for email varification
-                $varification_url = base_url() . 'users/verify?email=' . $this->input->post('email') . '&new_email=' . $this->input->post('email') . '&code=' . $varification_code;
+                $varification_url = base_url() . 'users/verify?email=' .
+				$this->input->post('email') . '&new_email=' 
+				. $this->input->post('email') . '&code=' . $varification_code;
                 $this->load->library('email');
 
                 $this->email->from(SUPPORT_EMAIL, SUPPORT_NAME);
@@ -120,8 +140,12 @@ class Users extends CI_Controller {
 
                 $this->email->subject('Account verification');
                 $message = "<b>Welcome to ".PLATFORM_NAME."</b><br />";
-                $message .= "Please click below link to verify your account. <br /><br /><br /><a href='$varification_url' style='background:none repeat scroll 0 0 #2DA5DA;border:medium none;color:#FFFFFF;cursor:pointer;outline:medium none;text-decoration:none;padding:5px;'/>Verify</a>";
-                $message .= "<br /><br /><br />Note: This is system generated e-mail. Please do not reply<br>";
+                $message .= "Please click below link to verify your account. 
+				<br /><br /><br /><a href='$varification_url' style='background:none
+				repeat scroll 0 0 #2DA5DA;border:medium none;color:#FFFFFF;cursor:pointer;
+				outline:medium none;text-decoration:none;padding:5px;'/>Verify</a>";
+                $message .= "<br /><br /><br />Note: 
+				This is system generated e-mail. Please do not reply<br>";
                 $message .= "<br /><b>".PLATFORM_NAME."</b>";
 
                 $this->email->message($message);
@@ -133,7 +157,8 @@ class Users extends CI_Controller {
                 $this->email->to('zahidiubb@yahoo.com');
                 $this->email->subject('New user signed up');
                 $message = "New user has been signed up. <br />
-                    User Name : " . $this->input->post('first_name') . " " . $this->input->post('last_name') . "<br />;
+                    User Name : " . $this->input->post('first_name') 
+					. " " . $this->input->post('last_name') . "<br />;
                     Email : " . $this->input->post('email') . "<br />";
                 $this->email->message($message);
 
@@ -172,7 +197,8 @@ class Users extends CI_Controller {
         $batch = array();
         if ($this->input->post()) {
 
-            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+            $this->form_validation->set_rules('email'
+			, 'Email', 'trim|required|valid_email');
 
             if ($this->form_validation->run() == FALSE) {
                 
@@ -191,23 +217,35 @@ class Users extends CI_Controller {
                     $this->db->update('users', $userdata);
 
                     //send email to user for email varification
-                    $varification_url = base_url() . 'users/resetpassword?id=' . $user_id . '&email=' . $email . '&code=' . $forgot_password;
+                    $varification_url = base_url() 
+					. 'users/resetpassword?id=' . $user_id 
+					. '&email=' . $email . '&code=' . $forgot_password;
                     $this->load->library('email');
 
                     $this->email->from(SUPPORT_EMAIL, SUPPORT_NAME);
                     $this->email->to($this->input->post('email'));
 
                     $this->email->subject('Reset your password');
-                    $message = "Dear user,<br /> Please click below link to reset password. <br /><br /><a href='$varification_url' style='background:none repeat scroll 0 0 #2DA5DA;border:medium none;color:#FFFFFF;cursor:pointer;outline:medium none;text-decoration:none;padding:5px;'/>Reset Password</a>";
-                    $message .= "<br /><br /><br />Note: This is system generated e-mail. Please do not reply<br>";
+                    $message = "Dear user,<br /> Please click below link to reset password.
+					<br /><br /><a href='$varification_url' style='background:none
+					repeat scroll 0 0 #2DA5DA;border:medium
+					none;color:#FFFFFF;cursor:pointer;outline:medium 
+					none;text-decoration:none;padding:5px;'/>Reset Password</a>";
+                    $message .= "<br /><br /><br />Note: 
+					This is system generated e-mail. Please do not reply<br>";
                     $message .= "<br /><b>".PLATFORM_NAME."</b>";
                     $this->email->message($message);
 
                     $this->email->set_mailtype('html');
                     $this->email->send();
-                    $this->session->set_flashdata('validate', array('message' => 'Reset password link has been sent to your email address.', 'type' => 'success'));
+                    $this->session->
+					set_flashdata('validate', array('message' => 
+					'Reset password link has been sent to your email address.', 'type' => 
+					'success'));
                 } else {
-                    $this->session->set_flashdata('validate', array('message' => 'This account does not exist.', 'type' => 'warning'));
+                    $this->session->
+					set_flashdata('validate', array('message' => 
+					'This account does not exist.', 'type' => 'warning'));
                     redirect(base_url() . 'forgotpassword');
                 }
                 redirect(base_url() . 'guest');
@@ -237,20 +275,28 @@ class Users extends CI_Controller {
             $user = $this->users_model->get_user_by_email($email);
             if ($user) {
                 if ($user['forgot_password'] != $code) {
-                    $this->session->set_flashdata('validate', array('message' => 'This link has been expired please resend the request.', 'type' => 'warning'));
+                    $this->session->set_flashdata('validate', 
+					array('message' => 'This link has been expired please resend the request.',
+					'type' => 'warning'));
                     redirect(base_url() . 'guest');
                 } else {
                     $data['user_id'] = $user['id'];
                 }
             } else {
-                $this->session->set_flashdata('validate', array('message' => 'This user not available.', 'type' => 'warning'));
+                $this->session->
+				set_flashdata('validate',
+				array('message' => 'This user not available.', 'type' => 'warning'));
                 redirect(base_url() . 'guest');
             }
         }
         if ($this->input->post()) {
 
-            $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[4]|max_length[32]');
-            $this->form_validation->set_rules('conf_password', 'Password Confirmation', 'trim|required|matches[password]');
+            $this->form_validation->
+			set_rules('password', 'Password',
+			'trim|required|min_length[4]|max_length[32]');
+            $this->form_validation->
+			set_rules('conf_password', 'Password Confirmation',
+			'trim|required|matches[password]');
 
             if ($this->form_validation->run() == FALSE) {
 
@@ -268,7 +314,10 @@ class Users extends CI_Controller {
                 $this->db->where('id', $user_id);
                 $this->db->update('users', $userdata);
 
-                $this->session->set_flashdata('validate', array('message' => 'Your password has been changed, please login and verify.', 'type' => 'success'));
+                $this->session->
+				set_flashdata('validate', array('message' => 
+				'Your password has been changed, please login and verify.',
+				'type' => 'success'));
 
                 $this->load->library('email');
                 $this->email->from(SUPPORT_EMAIL, SUPPORT_NAME);
@@ -295,7 +344,9 @@ class Users extends CI_Controller {
         $code = $_REQUEST['code'];
         $email = str_replace(' ', '+', $_REQUEST['email']);
         $new_email = str_replace(' ', '+', $_REQUEST['new_email']);
-        $query = $this->db->get_where('users', array('email' => $email, 'verification_code' => $code, 'is_deleted' => '0'));
+        $query = $this->db->
+		get_where('users', array('email' => $email, 'verification_code' =>
+		$code, 'is_deleted' => '0'));
         $exist = $query->row_array();
 
         if ($exist) {
